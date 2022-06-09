@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/Control.OSMGeocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/Control.OSMGeocoder.js"></script>
+        <script src="data/Soils_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:10, minZoom:6
+        }).fitBounds([[44.6768494389,20.922839057],[52.4710641446,44.2728099534]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        L.control.locate().addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        var overlay_BaseMap_0 = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            opacity: 1.0
+        });
+        overlay_BaseMap_0.addTo(map);
+        map.addLayer(overlay_BaseMap_0);
+        function pop_Soils_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Id</th>\
+                        <td>' + (feature.properties['Id'] !== null ? Autolinker.link(String(feature.properties['Id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name of the soil </th>\
+                        <td>' + (feature.properties['Name_1_eng'] !== null ? Autolinker.link(String(feature.properties['Name_1_eng'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name of the soil class</th>\
+                        <td>' + (feature.properties['Name_2_eng'] !== null ? Autolinker.link(String(feature.properties['Name_2_eng'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Soils_1_0(feature) {
+            switch(String(feature.properties['Id'])) {
+                case '1':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,231,175,1.0)',
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(248,233,169,1.0)',
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,210,181,1.0)',
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,204,180,1.0)',
+            }
+                    break;
+                case '5':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,183,154,1.0)',
+            }
+                    break;
+                case '6':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,199,137,1.0)',
+            }
+                    break;
+                case '7':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,184,142,1.0)',
+            }
+                    break;
+                case '8':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(178,163,120,1.0)',
+            }
+                    break;
+                case '9':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,190,174,1.0)',
+            }
+                    break;
+                case '10':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,150,129,1.0)',
+            }
+                    break;
+                case '11':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,193,197,1.0)',
+            }
+                    break;
+                case '12':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,134,138,1.0)',
+            }
+                    break;
+                case '13':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(157,129,118,1.0)',
+            }
+                    break;
+                case '14':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,166,156,1.0)',
+            }
+                    break;
+                case '15':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(205,192,184,1.0)',
+            }
+                    break;
+                case '16':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,212,202,1.0)',
+            }
+                    break;
+                case '17':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,175,178,1.0)',
+            }
+                    break;
+                case '18':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(185,140,101,1.0)',
+            }
+                    break;
+                case '19':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(194,159,155,1.0)',
+            }
+                    break;
+                case '20':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(161,144,150,1.0)',
+            }
+                    break;
+                case '21':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,214,212,1.0)',
+            }
+                    break;
+                case '22':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(177,160,153,1.0)',
+            }
+                    break;
+                case '23':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,140,135,1.0)',
+            }
+                    break;
+                case '24':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,152,130,1.0)',
+            }
+                    break;
+                case '25':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,218,178,1.0)',
+            }
+                    break;
+                case '26':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,170,199,1.0)',
+            }
+                    break;
+                case '27':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(198,124,113,1.0)',
+            }
+                    break;
+                case '28':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,183,176,1.0)',
+            }
+                    break;
+                case '29':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,185,150,1.0)',
+            }
+                    break;
+                case '30':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(178,205,158,1.0)',
+            }
+                    break;
+                case '31':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(108,133,100,1.0)',
+            }
+                    break;
+                case '32':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,91,132,1.0)',
+            }
+                    break;
+                case '33':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,191,224,1.0)',
+            }
+                    break;
+                case '34':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(121,145,109,1.0)',
+            }
+                    break;
+                case '35':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(220,175,153,1.0)',
+            }
+                    break;
+                case '36':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,189,197,1.0)',
+            }
+                    break;
+                case '37':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,66,67,1.0)',
+            }
+                    break;
+                case '38':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,202,181,1.0)',
+            }
+                    break;
+                case '39':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(117,80,116,1.0)',
+            }
+                    break;
+                case '40':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,217,192,1.0)',
+            }
+                    break;
+                case '41':
+                    return {
+                pane: 'pane_Soils_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,145,130,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Soils_1');
+        map.getPane('pane_Soils_1').style.zIndex = 401;
+        map.getPane('pane_Soils_1').style['mix-blend-mode'] = 'normal';
+        var layer_Soils_1 = new L.geoJson(json_Soils_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Soils_1',
+            onEachFeature: pop_Soils_1,
+            style: style_Soils_1_0,
+        });
+        bounds_group.addLayer(layer_Soils_1);
+        map.addLayer(layer_Soils_1);
+        var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Search',
+        });
+        osmGeocoder.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Soils<br /><table><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodweaklypodzolicsandyandclaysandysoils0.png" /></td><td>Sod-weakly podzolic sandy and clay sandy soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodmediumpodzolicloamysandsoils1.png" /></td><td>Sod-medium podzolic loamy sand soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodweaklypodzolicgleiedsoils2.png" /></td><td>Sod-weakly podzolic gleied soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodmediumpodzolicgleiedsoils3.png" /></td><td>Sod-medium podzolic gleied soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodmediumandstronglypodzolicsurfacegleyedsoils4.png" /></td><td>Sod-, medium-, and strongly-podzolic surface-gleyed soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Lightgreyandgreypodzolizedsoils5.png" /></td><td>Light grey and grey podzolized soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Darkgreypodzolizedsoils6.png" /></td><td>Dark grey podzolized soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemspodzolizedsoils7.png" /></td><td>Chernozems podzolized soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Darkgreyregradedsoils8.png" /></td><td>Dark grey regraded soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemsregradedsoils9.png" /></td><td>Chernozems regraded soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemstypicallowhumusandweaklyhumus10.png" /></td><td>Chernozems typical low-humus and weakly-humus</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemstypicalmediumhumus11.png" /></td><td>Chernozems typical medium-humus</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Ordinarydeeplowandmediumhumuschernozems12.png" /></td><td>Ordinary deep low- and medium-humus chernozems</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Ordinarymediumhumuschernozems13.png" /></td><td>Ordinary medium-humus chernozems</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Ordinarylowhumuschernozems14.png" /></td><td>Ordinary low-humus chernozems</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Ordinarylowhumusshallowchernozems15.png" /></td><td>Ordinary low-humus shallow chernozems</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Southernlowhumusandweaklyhumuschernozems16.png" /></td><td>Southern low-humus and weakly-humus chernozems</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemsmainlyalkalineonheavyclays17.png" /></td><td>Chernozems mainly alkaline on heavy clays</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemsandrubblysodsoilsontheeluviumofdensenoncarbonaterockssandstonesandschists18.png" /></td><td>Chernozems and rubbly sod soils on the eluvium of dense non-carbonate rocks (sandstones and schists)</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemsandsodcalcareoussoilsontheeluviumofcarbonaterocksmarlschalksandlimestones19.png" /></td><td>Chernozems and sod-calcareous soils on the eluvium of carbonate rocks (marls, chalks, and limestones)</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemstypicalandordinaryresidualsolonetzic20.png" /></td><td>Chernozems typical and ordinary residual-solonetzic</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chernozemssouthernresidualsolonetzic21.png" /></td><td>Chernozems southern residual-solonetzic</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowchernozemsoils22.png" /></td><td>Meadow-chernozem soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowchernozemsurfacealkalinesoils23.png" /></td><td>Meadow-chernozem surface-alkaline soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowchernozemdeepalkalinesoils24.png" /></td><td>Meadow-chernozem deep-alkaline soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Darkchestnutresidualalkalinesoils25.png" /></td><td>Dark chestnut residual-alkaline soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Darkchestnutalkalinesoils26.png" /></td><td>Dark chestnut alkaline soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Chestnutsolonetzicsoilsinthecomplexwithalkalinesoils27.png" /></td><td>Chestnut solonetzic soils in the complex with alkaline soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowsoils28.png" /></td><td>Meadow soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowsolonetzicsoils29.png" /></td><td>Meadow solonetzic soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowboggyandbogsoils30.png" /></td><td>Meadow-boggy and bog soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Peatbogsoilsandpeatlands31.png" /></td><td>Peatbog soils and peatlands</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Mainlysolonchaksolonetzes32.png" /></td><td>Mainly solonchak solonetzes</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Meadowchernozemandsodsolodedgleysoilsandsolods33.png" /></td><td>Meadow-chernozem and sod-soloded gley soils and solods</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodmainlygleyedsandyclaysandyandloamysandsoilsinthecomplexwithlowhumussands34.png" /></td><td>Sod mainly gleyed sandy, clay sandy and loamy sand soils in the complex with low- humus sands</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodpodzolizedloamysoilsandtheirgleyedtypes35.png" /></td><td>Sod podzolized loamy soils and their gleyed types</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Brownpodzolicsoilsandtheirsurfacegleyedtypes36.png" /></td><td>Brown-podzolic soils and their surface-gleyed types</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Brownmountainforestrubblysoilsinthecomplexwiththeirgleyedtypes37.png" /></td><td>Brown mountain-forest rubbly soils in the complex with their gleyed types</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodbrownandmountainmeadowsoils38.png" /></td><td>Sod-brown and mountain-meadow soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Cinnamonicmountainrubblysoils39.png" /></td><td>Cinnamonic mountain rubbly soils</td></tr><tr><td style="text-align: center;"><img src="legend/Soils_1_Sodsandyandclaysandymainlyungleyedsoilsinthecomplexwithlowhumussands40.png" /></td><td>Sod sandy and clay sandy mainly ungleyed soils in the complex with low-humus sands</td></tr></table>': layer_Soils_1,"BaseMap": overlay_BaseMap_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
